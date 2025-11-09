@@ -137,4 +137,12 @@ for i in range(len(idx)):
 
 
 ## Question 13
- 
+# Tracé de l'histogramme normalisé (aire = 1)
+plt.hist(inscrits, bins = 20, density=True)  # density=True => aire totale = 1
+plt.xlabel('Nombre d\'inscrits')
+plt.ylabel('Densité')
+plt.grid(True)
+plt.title('Histogramme - distribution des inscrits (aire = 1)')
+
+plt.savefig('./output/images_Q13/histogramme_inscrits.png')
+plt.show()
