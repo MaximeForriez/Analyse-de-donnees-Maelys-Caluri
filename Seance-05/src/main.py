@@ -5,27 +5,122 @@ import math
 import scipy
 import scipy.stats
 
-#C'est la partie la plus importante dans l'analyse de données. D'une part, elle n'est pas simple à comprendre tant mathématiquement que pratiquement. D'autre, elle constitue une application des probabilités. L'idée consiste à comparer une distribution de probabilité (théorique) avec des observations concrètes. De fait, il faut bien connaître les distributions vues dans la séance précédente afin de bien pratiquer cette comparaison. Les probabilités permettent de définir une probabilité critique à partir de laquelle les résultats ne sont pas conformes à la théorie probabiliste.
-#Il n'est pas facile de proposer des analyses de données uniquement dans un cadre univarié. Vous utiliserez la statistique inférentielle principalement dans le cadre d'analyses multivariées. La statistique univariée est une statistique descriptive. Bien que les tests y soient possibles, comprendre leur intérêt et leur puissance d'analyse dans un tel cadre peut être déroutant.
-#Peu importe dans quelle théorie vous êtes, l'idée de la statistique inférentielle est de vérifier si ce que vous avez trouvé par une méthode de calcul est intelligent ou stupide. Est-ce que l'on peut valider le résultat obtenu ou est-ce que l'incertitude qu'il présente ne permet pas de conclure ? Peu importe également l'outil, à chaque mesure statistique, on vous proposera un test pour vous aider à prendre une décision sur vos résultats. Il faut juste être capable de le lire.
-
-#Par convention, on place les fonctions locales au début du code après les bibliothèques.
+# Fonctions locales
 def ouvrirUnFichier(nom):
     with open(nom, "r") as fichier:
         contenu = pd.read_csv(fichier)
     return contenu
 
-#Théorie de l'échantillonnage (intervalles de fluctuation)
-#L'échantillonnage se base sur la répétitivité.
+def calculerMoyenneDeListe(liste):
+    # cette fonction calcule la moyenne d'une liste
+    somme = 0
+    for i in range(len(liste)): # d'abord on somme tous les éléments de la liste
+        somme += liste[i]
+    moyenne = somme / len(liste) # puis on divise la somme par le nombre d'éléments
+    return moyenne
+
+def testerHypothesesFormuleIntervalleFluctuation(n, p):
+    # cette fonction vérifie si les paramètres n et p remplissent les trois conditions nécessaires 
+    # pour que l'on puisse appliquer la formule de l'intervalle de fluctuation.
+    if n >= 30:
+        if n*p >= 5:
+            if n*(1-p) >= 5:
+                return True
+    else:
+        return False
+    
+def calculerIntervalleFluctuation(n, p, z_c):
+    intervalle = [p - z_c*((math.sqrt(p*(1-p))) / (math.sqrt(n))),  p + z_c*((math.sqrt(p*(1-p))) / (math.sqrt(n)))]
+    return intervalle
+
+
+# 1 - Théorie de l'échantillonnage (intervalles de fluctuation)
+# L'échantillonnage se base sur la répétitivité.
 print("Résultat sur le calcul d'un intervalle de fluctuation")
 
 donnees = pd.DataFrame(ouvrirUnFichier("./data/Echantillonnage-100-Echantillons.csv"))
 
-#Théorie de l'estimation (intervalles de confiance)
-#L'estimation se base sur l'effectif.
+# 1.1 Calcul des moyennes
+liste_pour = donnees["Pour"]
+liste_cont = donnees["Contre"]
+liste_sans = donnees["Sans opinion"]
+
+moy_pour = round(calculerMoyenneDeListe(liste_pour))
+moy_cont = round(calculerMoyenneDeListe(liste_cont))
+moy_sans = round(calculerMoyenneDeListe(liste_sans))
+
+print("moy_pour = ", moy_pour)
+print("moy_cont = ", moy_cont)
+print("moy_sans = ", moy_sans)
+
+
+
+# 1.2 Calcul des fréquences
+# Pour les moyennes obtenues
+somme_moyennes_obtenues = moy_pour + moy_cont + moy_sans
+
+freq_pour = round(moy_pour / somme_moyennes_obtenues, 3)
+freq_cont = round(moy_cont / somme_moyennes_obtenues, 3)
+freq_sans = round(moy_sans / somme_moyennes_obtenues, 3)
+
+print("freq_pour = ", freq_pour)
+print("freq_cont = ", freq_cont)
+print("freq_sans = ", freq_sans)
+
+# Pour la population mère
+somme_moyennes_mere = 852 + 911 + 422
+
+freq_pour_mere = round(852 / somme_moyennes_mere, 3)
+freq_cont_mere = round(911 / somme_moyennes_mere, 3)
+freq_sans_mere = round(422 / somme_moyennes_mere, 3)
+
+print("freq_pour_mere = ", freq_pour_mere)
+print("freq_cont_mere = ", freq_cont_mere)
+print("freq_sans_mere = ", freq_sans_mere)
+
+
+
+# 1.3 Calcul de l'intervalle de fluctuation 
+n = 100
+z_c = 1.96
+# Pour la catégorie "Pour"
+p_pour = 852 / 2185
+if testerHypothesesFormuleIntervalleFluctuation(n, p_pour):
+    intervalle_pour = calculerIntervalleFluctuation(n, p_pour, z_c)
+
+print("intervalle_pour = ", intervalle_pour)
+
+# Pour la catégorie "Contre"
+p_cont = 911 / 2185
+if testerHypothesesFormuleIntervalleFluctuation(n, p_cont):
+    intervalle_cont = calculerIntervalleFluctuation(n, p_cont, z_c)
+
+print("intervalle_cont = ", intervalle_cont)
+
+# Pour la catégorie "Sans opinion"
+p_sans = 422 / 2185
+if testerHypothesesFormuleIntervalleFluctuation(n, p_sans):
+    intervalle_sans = calculerIntervalleFluctuation(n, p_sans, z_c)
+
+print("intervalle_sans = ", intervalle_sans)
+
+# 1.4 Explication lien
+# Lien entre ...
+
+
+
+# On en conclut que
+# Comme les 3 valeurs de fréquences sont comprises dans les intervalles de fluctuation, alors
+# avec 95% de chances d'avoir raison, on peut affirmer que l'échantillon est représentatif de la population totale.
+
+# 2 - Théorie de l'estimation (intervalles de confiance)
+# L'estimation se base sur l'effectif.
 print("Résultat sur le calcul d'un intervalle de confiance")
 
-#Théorie de la décision (tests d'hypothèse)
-#La décision se base sur la notion de risques alpha et bêta.
-#Comme à la séance précédente, l'ensemble des tests se trouve au lien : https://docs.scipy.org/doc/scipy/reference/stats.html
+
+
+
+
+# 3 - Théorie de la décision (tests d'hypothèse)
+# La décision se base sur la notion de risques alpha et bêta.
 print("Théorie de la décision")
