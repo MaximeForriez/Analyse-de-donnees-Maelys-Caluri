@@ -248,3 +248,203 @@ plt.ylabel("Pr(k)")
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.savefig("./output/1_B_Distrib_Continues/1_Poisson_continu_remplie.png")
 plt.close()
+
+
+## Question 1.B.2 - Loi Normale
+# Loi Normale : "La fameuse Gaussienne"
+#                ... centrée en la valeur mu
+#                ... s'étend de - infini à + infini
+#                ... mais 99.7% se trouvent entre mu - 3 sigma 
+#                                              et mu + 3 sigma
+def distrib_normale_continu(mu, sigma, facteur_sigma = 3, finesse = 500):
+    K_cont = np.linspace(mu - facteur_sigma*sigma, mu + facteur_sigma*sigma, finesse) # la largeur de l'intervalle est fixée ici
+    P_cont = scipy.stats.norm.pdf(K_cont, mu, sigma)
+
+    return K_cont, P_cont
+
+# Paramètrage
+mu = 5             # Paramètre mu, valeur centrale
+sigma = 20         # Paramètre sigma, impliquant la largeur
+facteur_sigma = 3  # Quelle largeur représentée
+finesse = 500      # nombre de points
+
+# On génère la distribution
+K_cont, P_cont = distrib_normale_continu(mu, sigma, facteur_sigma, finesse)
+
+# On visualise la distribution - CLASSIQUEMENT
+plt.plot(K_cont, P_cont)
+plt.title("Loi Normale centrée en mu = {}, de largeur {}*sigma (sigma = {})."
+          .format(mu, 2*facteur_sigma, sigma))
+plt.xlabel("k")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/2_Normale_continu.png")
+plt.close()
+
+# On visualise la distribution - REMPLIE
+plt.plot(K_cont, P_cont)
+plt.fill_between(K_cont, P_cont, alpha=0.3)
+plt.title("Loi Normale centrée en mu = {}, de largeur {}*sigma (avec sigma = {})."
+          .format(mu, 2*facteur_sigma, sigma))
+plt.xlabel("k")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/2_Normale_continu_remplie.png")
+plt.close()
+
+
+
+
+## Question 1.B.3 - Loi Log-normale
+def distrib_normale_continu(mu, sigma, n_max, finesse = 500):
+    K_cont = np.linspace(0.001, n_max, finesse) 
+    P_cont = scipy.stats.lognorm.pdf(K_cont, s=sigma, scale=np.exp(mu))
+
+    return K_cont, P_cont
+
+# Paramètrage
+mu = 1             # Paramètre mu
+sigma = 0.5        # Paramètre sigma
+n_max = 20         # valeur maximale
+finesse = 500      # nombre de points
+
+# On génère la distribution
+K_cont, P_cont = distrib_normale_continu(mu, sigma, n_max, finesse)
+
+# On visualise la distribution - CLASSIQUEMENT
+plt.plot(K_cont, P_cont)
+plt.title("Loi Log-normale (avec mu = {}; sigma = {})".format(mu, sigma))
+plt.xlabel("k")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/3_Log_normale_continu.png")
+plt.close()
+
+# On visualise la distribution - REMPLIE
+plt.plot(K_cont, P_cont)
+plt.fill_between(K_cont, P_cont, alpha=0.3)
+plt.title("Loi Log-normale (avec mu = {}; sigma = {})".format(mu, sigma))
+plt.xlabel("k")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/3_Log-normale_continu_remplie.png")
+plt.close()
+
+
+
+
+## Question 1.B.4 - Loi Uniforme
+def distrib_uniforme_continu(x_min, a, b, x_max, finesse = 500):
+    K_cont = np.linspace(x_min, x_max, finesse)
+    P_cont = scipy.stats.uniform.pdf(K_cont, loc=a, scale=b-a)
+
+    return K_cont, P_cont
+
+# Paramètrage
+x_min = -10    # borne sup de la fenêtre
+a     = -2     # borne inférieure
+b     =  8     # borne supérieure
+x_max = 10     # borne sup de la fenêtre
+finesse = 500  # nombre de points
+
+# On génère la distribution
+K_cont, P_cont = distrib_uniforme_continu(x_min, a, b, x_max, finesse)
+
+# On visualise la distribution - CLASSIQUEMENT
+plt.plot(K_cont, P_cont)
+plt.title("Loi uniforme de bornes [a ; b] = [{} ; {}]".format(a,b))
+plt.xlabel("x")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/4_Uniforme_continu.png")
+plt.close()
+
+# On visualise la distribution - REMPLIE
+plt.plot(K_cont, P_cont)
+plt.fill_between(K_cont, P_cont, alpha=0.3)
+plt.title("Loi uniforme de bornes [a ; b] = [{} ; {}]".format(a,b))
+plt.xlabel("k")
+plt.ylabel("Pr(k)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/4_Uniforme_continu_remplie.png")
+plt.close()
+
+
+
+
+## Question 1.B.5 - Loi du Chi²
+def distrib_chi2_continu(k, n_max, finesse = 500):
+    K_cont = np.linspace(0.001, n_max, finesse)
+    P_cont = scipy.stats.chi2.pdf(K_cont, df=k)
+
+    return K_cont, P_cont
+
+# Paramètrage
+k = 5          # Paramètre k
+n_max = 50    # Valeur maximale
+finesse = 500  # nombre de points
+
+# On génère la distribution
+K_cont, P_cont = distrib_chi2_continu(k, n_max, finesse)
+
+# On visualise la distribution - CLASSIQUEMENT
+plt.plot(K_cont, P_cont)
+plt.title("Loi du chi² pour k = {}".format(k))
+plt.xlabel("Valeur de la statistique χ²")
+plt.ylabel("Densité de probabilité f(x)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/5_Chi2_continu.png")
+plt.close()
+
+# On visualise la distribution - REMPLIE
+plt.plot(K_cont, P_cont)
+plt.fill_between(K_cont, P_cont, alpha=0.3)
+plt.title("Loi du chi² pour k = {}".format(k))
+plt.xlabel("Valeur de la statistique χ²")
+plt.ylabel("Densité de probabilité f(x)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/5_Chi2_continu_remplie.png")
+plt.close()
+
+
+
+## Question 1.B.6 - Loi de Pareto
+def distrib_pareto_continu(alpha, x_m, n_max, finesse = 500):
+    K_cont = np.linspace(x_m, n_max, finesse)
+    P_cont = scipy.stats.pareto.pdf(K_cont, b=alpha, scale=x_m)
+
+    return K_cont, P_cont
+
+
+# paramètres
+alpha = 1      # shape
+x_m = 1          # x_m
+n_max = 20
+finesse = 500  # nombre de points
+
+# On génère la distribution
+K_cont, P_cont = distrib_pareto_continu(alpha, x_m, n_max, finesse)
+
+# On visualise la distribution - CLASSIQUEMENT
+plt.plot(K_cont, P_cont)
+plt.title("Loi de Pareto (avec x_m = {}, alpha = {})".format(x_m, alpha))
+plt.xlabel("x")
+plt.ylabel("Densité de probabilité f(x)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/6_Pareto_continu.png")
+plt.close()
+
+# On visualise la distribution - REMPLIE
+plt.plot(K_cont, P_cont)
+plt.fill_between(K_cont, P_cont, alpha=0.3)
+plt.title("Loi de Pareto (avec x_m = {}, alpha = {})".format(x_m, alpha))
+plt.xlabel("x")
+plt.ylabel("Densité de probabilité f(x)")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/1_B_Distrib_Continues/6_Pareto_continu_remplie.png")
+plt.close()
+
+## 2 - CALCUL MOYENNE ET ECART-TYPE
+# Définition des fonctions
+
+# Test des fonctions
