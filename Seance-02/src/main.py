@@ -209,28 +209,3 @@ plt.show()
 print("-> Voir dossier ./output/images_Q13") 
 
 print("\033[0m\n")
-
-
-
-
-
-
-
-
-
-
-                                        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
