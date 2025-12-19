@@ -40,7 +40,8 @@ def calculerIntervalleConfiance(n, f, z_c):
 
 # 1 - Théorie de l'échantillonnage (intervalles de fluctuation)
 # L'échantillonnage se base sur la répétitivité.
-print("Résultat sur le calcul d'un intervalle de fluctuation")
+print("\033[94m\n 1 - Théorie de l'échantillonnage")
+print(" Résultat sur le calcul d'un intervalle de fluctuation")
 
 donnees = pd.DataFrame(ouvrirUnFichier("./data/Echantillonnage-100-Echantillons.csv"))
 
@@ -53,9 +54,10 @@ moy_pour = round(calculerMoyenneDeListe(liste_pour))
 moy_cont = round(calculerMoyenneDeListe(liste_cont))
 moy_sans = round(calculerMoyenneDeListe(liste_sans))
 
-print("moy_pour = ", moy_pour)
-print("moy_cont = ", moy_cont)
-print("moy_sans = ", moy_sans)
+print("\nVoici les 3 moyennes obtenues")
+print("Moyenne de Pour = ", moy_pour)
+print("Moyenne de Contre = ", moy_cont)
+print("Moyenne de Sans opinion = ", moy_sans)
 
 
 
@@ -67,9 +69,10 @@ freq_pour = round(moy_pour / somme_moyennes_obtenues, 3)
 freq_cont = round(moy_cont / somme_moyennes_obtenues, 3)
 freq_sans = round(moy_sans / somme_moyennes_obtenues, 3)
 
-print("freq_pour = ", freq_pour)
-print("freq_cont = ", freq_cont)
-print("freq_sans = ", freq_sans)
+print("\n Voici les 3 fréquences obtenues")
+print("Fréquence de Pour = ", freq_pour)
+print("Fréquence de Contre = ", freq_cont)
+print("Fréquence de Sans opinion = ", freq_sans)
 
 # Pour la population mère
 somme_moyennes_mere = 852 + 911 + 422
@@ -78,13 +81,15 @@ freq_pour_mere = round(852 / somme_moyennes_mere, 3)
 freq_cont_mere = round(911 / somme_moyennes_mere, 3)
 freq_sans_mere = round(422 / somme_moyennes_mere, 3)
 
-print("freq_pour_mere = ", freq_pour_mere)
-print("freq_cont_mere = ", freq_cont_mere)
-print("freq_sans_mere = ", freq_sans_mere)
+print("\n Voici les 3 fréquences de la population mère")
+print("Freq_mere Pour = ", freq_pour_mere)
+print("Freq_mere Contre= ", freq_cont_mere)
+print("Freq_mere Sans Opinion= ", freq_sans_mere)
 
 
 
 # 1.3 Calcul de l'intervalle de fluctuation 
+print("\n Voici les 3 intervalles de fluctuation")
 n = 100
 z_c = 1.96
 # Pour la catégorie "Pour"
@@ -92,21 +97,21 @@ p_pour = 852 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_pour):
     inter_fluc_pour = calculerIntervalleFluctuation(n, p_pour, z_c)
 
-print("inter_fluc_pour = ", inter_fluc_pour)
+print("Inter_fluc Pour = ", inter_fluc_pour)
 
 # Pour la catégorie "Contre"
 p_cont = 911 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_cont):
     inter_fluc_cont = calculerIntervalleFluctuation(n, p_cont, z_c)
 
-print("inter_fluc_cont = ", inter_fluc_cont)
+print("Inter_fluc Contre = ", inter_fluc_cont)
 
 # Pour la catégorie "Sans opinion"
 p_sans = 422 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_sans):
     inter_fluc_sans = calculerIntervalleFluctuation(n, p_sans, z_c)
 
-print("inter_fluc_sans = ", inter_fluc_sans)
+print("Inter_fluc Sans Opinion= ", inter_fluc_sans)
 
 # 1.4 Explication lien
 # Lien entre ...
@@ -122,11 +127,13 @@ print("inter_fluc_sans = ", inter_fluc_sans)
 
 # 2 - Théorie de l'estimation (intervalles de confiance)
 # L'estimation se base sur l'effectif.
+print("\033[93m\n 2 - Théorie de l'estimation")
 print("Résultat sur le calcul d'un intervalle de confiance")
 
 # 2.1 Extraire le premier échantillon
 echant_un = list(donnees.iloc[0])
-print("echant_un =", echant_un)
+print("\n Voici le 1er échantillon")
+print("Echantillon 1 =", echant_un)
 
 # 2.2 Calcul des fréquences de l'échantillon isolé
 effectif_tot = sum(echant_un)
@@ -135,18 +142,20 @@ freq_pour_isole = echant_un[0]/effectif_tot
 freq_cont_isole = echant_un[1]/effectif_tot
 freq_sans_isole = echant_un[2]/effectif_tot
 
-print("freq_pour_isole = ", freq_pour_isole)
-print("freq_cont_isole = ", freq_cont_isole)
-print("freq_sans_isole = ", freq_sans_isole)
+print("\n Voici les 3 fréquences de l'échantillon isolé")
+print("Freq_isole Pour= ", freq_pour_isole)
+print("Freq_isole Contre= ", freq_cont_isole)
+print("Freq_isole Sans opinion= ", freq_sans_isole)
 
 # 2.3 Calcul des intervalles de confiance
 inter_conf_pour = calculerIntervalleConfiance(effectif_tot, freq_pour_isole, z_c)
 inter_conf_cont = calculerIntervalleConfiance(effectif_tot, freq_cont_isole, z_c)
 inter_conf_sans = calculerIntervalleConfiance(effectif_tot, freq_sans_isole, z_c)
 
-print("inter_conf_pour = ", inter_conf_pour)
-print("inter_conf_cont = ", inter_conf_cont)
-print("inter_conf_sans = ", inter_conf_sans)
+print("\n Voici les 3 intervalles de confiance")
+print("Inter_conf Pour = ", inter_conf_pour)
+print("Inter_conf Cont = ", inter_conf_cont)
+print("Inter_conf Sans = ", inter_conf_sans)
 
 # 2.4 Interprétation
 # L'intervalle de confiance est plus mince, donc plus retreint, que l'intervalle de fluctuation
@@ -155,6 +164,7 @@ print("inter_conf_sans = ", inter_conf_sans)
 
 # 3 - Théorie de la décision (tests d'hypothèse)
 # La décision se base sur la notion de risques alpha et bêta.
+print("\033[94m\n 3 - Théorie de la décision")
 print("Théorie de la décision")
 
 donnees_1 = pd.DataFrame(ouvrirUnFichier("./data/Loi-normale-Test-1.csv"))
@@ -166,9 +176,14 @@ test_2 = list(donnees_2["Test"])
 stat_1, p_value_1 = scipy.stats.shapiro(test_1)
 stat_2, p_value_2 = scipy.stats.shapiro(test_2)
 
-print(stat_1, p_value_1)
-print(stat_2, p_value_2)
+print("\n Voici les résultats du test de Shapiro")
+print("Test 1 : stat_1 = ", stat_1, ",  p_value_1 = ", p_value_1)
+print("Test 2 : stat_2 = ", stat_2, ",  p_value_2 = ", p_value_2)
 
+print("\033[0m\n")
+
+# Bonus
+# On génère les graphes pour appuyer notre décision
 borne_inf = min(test_1)
 borne_sup = max(test_1)
 X = []
@@ -207,14 +222,3 @@ plt.ylabel("y")
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.savefig("./output/test_2.png")
 plt.close()
-
-
-#Bonus
-
-params = scipy.stats.pareto.fit(test_2[1750:1752])
-
-print(params)
-
-D, p_value = scipy.stats.kstest(test_2, 'pareto', args=params)
-
-print(D, p_value)
