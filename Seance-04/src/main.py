@@ -103,7 +103,7 @@ def distrib_normale_continu(mu, sigma, facteur_sigma = 3, finesse = 500):
     return K_cont, P_cont
 
 ## 1.B.3 - Loi Log-normale
-def distrib_normale_continu(mu, sigma, n_max, finesse = 500):
+def distrib_log_normale_continu(mu, sigma, n_max, finesse = 500):
     K_cont = np.linspace(0.001, n_max, finesse) 
     P_cont = scipy.stats.lognorm.pdf(K_cont, s=sigma, scale=np.exp(mu))
 
@@ -134,6 +134,9 @@ def distrib_pareto_continu(alpha, x_m, n_max, finesse = 500):
 
 
 
+###
+# DEBUT DU PROGRAMME
+###
 
 
 ## 1 - VISUALISER DES DISTRIBUTIONS
@@ -321,8 +324,8 @@ plt.close()
 #                                              et mu + 3 sigma
 
 # Paramètrage
-mu = 5             # Paramètre mu, valeur centrale
-sigma = 20         # Paramètre sigma, impliquant la largeur
+mu = 5            # Paramètre mu, valeur centrale
+sigma = 20        # Paramètre sigma, impliquant la largeur
 facteur_sigma = 3  # Quelle largeur représentée
 finesse = 500      # nombre de points
 
@@ -362,7 +365,7 @@ n_max = 20         # valeur maximale
 finesse = 500      # nombre de points
 
 # On génère la distribution
-K_cont, P_cont = distrib_normale_continu(mu, sigma, n_max, finesse)
+K_cont, P_cont = distrib_log_normale_continu(mu, sigma, n_max, finesse)
 
 # On visualise la distribution - CLASSIQUEMENT
 plt.plot(K_cont, P_cont)
