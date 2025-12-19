@@ -33,6 +33,9 @@ def calculerIntervalleFluctuation(n, p, z_c):
     intervalle = [p - z_c*((math.sqrt(p*(1-p))) / (math.sqrt(n))),  p + z_c*((math.sqrt(p*(1-p))) / (math.sqrt(n)))]
     return intervalle
 
+def calculerIntervalleConfiance(n, f, z_c):
+    intervalle = [f - z_c*((math.sqrt(f*(1-f))) / (math.sqrt(n))),  f + z_c*((math.sqrt(f*(1-f))) / (math.sqrt(n)))]
+    return intervalle
 
 # 1 - Théorie de l'échantillonnage (intervalles de fluctuation)
 # L'échantillonnage se base sur la répétitivité.
@@ -86,23 +89,23 @@ z_c = 1.96
 # Pour la catégorie "Pour"
 p_pour = 852 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_pour):
-    intervalle_pour = calculerIntervalleFluctuation(n, p_pour, z_c)
+    inter_fluc_pour = calculerIntervalleFluctuation(n, p_pour, z_c)
 
-print("intervalle_pour = ", intervalle_pour)
+print("inter_fluc_pour = ", inter_fluc_pour)
 
 # Pour la catégorie "Contre"
 p_cont = 911 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_cont):
-    intervalle_cont = calculerIntervalleFluctuation(n, p_cont, z_c)
+    inter_fluc_cont = calculerIntervalleFluctuation(n, p_cont, z_c)
 
-print("intervalle_cont = ", intervalle_cont)
+print("inter_fluc_cont = ", inter_fluc_cont)
 
 # Pour la catégorie "Sans opinion"
 p_sans = 422 / 2185
 if testerHypothesesFormuleIntervalleFluctuation(n, p_sans):
-    intervalle_sans = calculerIntervalleFluctuation(n, p_sans, z_c)
+    inter_fluc_sans = calculerIntervalleFluctuation(n, p_sans, z_c)
 
-print("intervalle_sans = ", intervalle_sans)
+print("inter_fluc_sans = ", inter_fluc_sans)
 
 # 1.4 Explication lien
 # Lien entre ...
@@ -113,12 +116,36 @@ print("intervalle_sans = ", intervalle_sans)
 # Comme les 3 valeurs de fréquences sont comprises dans les intervalles de fluctuation, alors
 # avec 95% de chances d'avoir raison, on peut affirmer que l'échantillon est représentatif de la population totale.
 
+
+
+
 # 2 - Théorie de l'estimation (intervalles de confiance)
 # L'estimation se base sur l'effectif.
 print("Résultat sur le calcul d'un intervalle de confiance")
 
+# 2.1 Extraire le premier échantillon
+echant_un = list(donnees.iloc[0])
+print("echant_un =", echant_un)
 
+# 2.2 Calcul des fréquences de l'échantillon isolé
+effectif_tot = sum(echant_un)
 
+freq_pour_isole = echant_un[0]/effectif_tot
+freq_cont_isole = echant_un[1]/effectif_tot
+freq_sans_isole = echant_un[2]/effectif_tot
+
+print("freq_pour_isole = ", freq_pour_isole)
+print("freq_cont_isole = ", freq_cont_isole)
+print("freq_sans_isole = ", freq_sans_isole)
+
+# 2.3 Calcul des intervalles de confiance
+inter_conf_pour = calculerIntervalleConfiance(effectif_tot, freq_pour_isole, z_c)
+inter_conf_cont = calculerIntervalleConfiance(effectif_tot, freq_cont_isole, z_c)
+inter_conf_sans = calculerIntervalleConfiance(effectif_tot, freq_sans_isole, z_c)
+
+print("inter_conf_pour = ", inter_conf_pour)
+print("inter_conf_cont = ", inter_conf_cont)
+print("inter_conf_sans = ", inter_conf_sans)
 
 
 # 3 - Théorie de la décision (tests d'hypothèse)
