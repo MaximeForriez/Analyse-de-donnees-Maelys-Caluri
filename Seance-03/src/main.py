@@ -235,8 +235,8 @@ for surface in surfaces: # Pour chaque surface :
     else :
         compte_10000_INF += 1
 
-print("Voici les résultats de la catégorisation:")
-print("\nEntre 0 et 10km², on dénombre {} îles."      .format(compte_0_10))
+print("\nVoici les résultats de la catégorisation:")
+print("Entre 0 et 10km², on dénombre {} îles."      .format(compte_0_10))
 print("Entre 10 et 25km², on dénombre {} îles."       .format(compte_10_25))
 print("Entre 25 et 50km², on dénombre {} îles."       .format(compte_25_50))
 print("Entre 50 et 100km², on dénombre {} îles."      .format(compte_50_100))
