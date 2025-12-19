@@ -3,6 +3,7 @@
 import pandas as pd
 import math
 import scipy
+import matplotlib.pyplot as plt
 import scipy.stats
 
 # Fonctions locales
@@ -147,7 +148,62 @@ print("inter_conf_pour = ", inter_conf_pour)
 print("inter_conf_cont = ", inter_conf_cont)
 print("inter_conf_sans = ", inter_conf_sans)
 
+# 2.4 Interprétation
+# L'intervalle de confiance est plus mince, donc plus retreint, que l'intervalle de fluctuation
+
+
 
 # 3 - Théorie de la décision (tests d'hypothèse)
 # La décision se base sur la notion de risques alpha et bêta.
 print("Théorie de la décision")
+
+donnees_1 = pd.DataFrame(ouvrirUnFichier("./data/Loi-normale-Test-1.csv"))
+donnees_2 = pd.DataFrame(ouvrirUnFichier("./data/Loi-normale-Test-2.csv"))
+
+test_1 = list(donnees_1["Test"])
+test_2 = list(donnees_2["Test"])
+
+stat_1, p_value_1 = scipy.stats.shapiro(test_1)
+stat_2, p_value_2 = scipy.stats.shapiro(test_2)
+
+print(stat_1, p_value_1)
+print(stat_2, p_value_2)
+
+borne_inf = min(test_1)
+borne_sup = max(test_1)
+X = []
+Y = []
+for i in range(borne_inf, borne_sup+1):
+    X.append(i)
+    Y.append(0)
+
+for j in range(len(test_1)):
+    Y[test_1[j]-borne_inf] += 1
+
+plt.stem(X, Y)
+plt.title("Test 1")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/test_1.png")
+plt.close()
+
+
+borne_inf = min(test_2)
+borne_sup = max(test_2)
+X = []
+Y = []
+for i in range(borne_inf, borne_sup+1):
+    X.append(i)
+    Y.append(0)
+
+for j in range(len(test_2)):
+    Y[test_2[j]-borne_inf] += 1
+
+plt.stem(X, Y)
+plt.title("Test 2")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.grid(True, linestyle="--", alpha=0.5)
+plt.savefig("./output/test_2.png")
+plt.close()
