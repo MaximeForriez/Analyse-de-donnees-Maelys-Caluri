@@ -207,3 +207,14 @@ plt.ylabel("y")
 plt.grid(True, linestyle="--", alpha=0.5)
 plt.savefig("./output/test_2.png")
 plt.close()
+
+
+#Bonus
+
+params = scipy.stats.pareto.fit(test_2[1750:1752])
+
+print(params)
+
+D, p_value = scipy.stats.kstest(test_2, 'pareto', args=params)
+
+print(D, p_value)
