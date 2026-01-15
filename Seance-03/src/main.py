@@ -181,7 +181,7 @@ print("-> Voir dossier ./output/img")
 ## Question 10
 print("\033[93m\n ## QUESTION 10 ##\n")
 
-with open("./data/island-index.csv", "r") as fichier_2 :
+with open("./data/island-index.csv", "r", encoding='utf-8') as fichier_2 :
     contenu_2 = pd.read_csv(fichier_2, low_memory=False)
 
 iles = pd.DataFrame(contenu_2)
